@@ -13,7 +13,7 @@ import { AppDataSource } from './database/datasources'
 import passport from 'passport'
 import { JWTStrategy } from './middlewares/passport'
 
-class App {
+export class App {
   public app: express.Application
 
   constructor () {
