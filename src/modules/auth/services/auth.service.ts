@@ -35,7 +35,7 @@ export class AuthService {
     return {
       id_emp: empleado.id_emp,
       noempx: empleado.noempx,
-      nombre: `${empleado.apPaterno} ${empleado.apMaterno} ${empleado.nombre}`,
+      nombre: `${empleado.nombre} ${empleado.apPaterno} ${empleado.apMaterno}`,
       id_cia: empleado.id_cia,
       vigencia: empleado.vigencia,
       empresa: empresa[0].razonSocial,

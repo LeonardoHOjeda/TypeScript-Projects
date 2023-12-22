@@ -4,13 +4,13 @@ import { Seed } from './seed'
 import { Seed as RanSeed } from '../entities/seed.entity'
 import { AppDataSource } from './datasources'
 
-async function seed(...seeds: Seed[]) {
+async function seed (...seeds: Seed[]) {
   await AppDataSource.initialize()
 
   for await (const seeder of seeds) {
     const exists = await RanSeed.count({ where: { id: seeder.id } })
 
-    if (exists == 0) {
+    if (exists === 0) {
       try {
         logger.debug(`Running ${seeder.id}...`)
         await seeder.seed()

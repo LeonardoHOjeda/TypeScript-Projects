@@ -1,5 +1,9 @@
-import { BaseEntity, Column, Entity, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm'
 import { Codigos } from './codigos.entity'
+import { Nacionalidad } from './nacionalidad.entity'
+import { Estado } from './estado.entity'
+import { EstadoCivil } from './estado_civil.entity'
+import { HSupervisor } from './supervisor.entity'
 
 @Entity('Empleados')
 export class Empleado extends BaseEntity {
@@ -48,6 +52,34 @@ export class Empleado extends BaseEntity {
   @Column()
     id_cia: number
 
+  @Column()
+    id_nacionalidad: number
+
+  @Column()
+    id_estadoNac: number
+
+  @Column()
+    edoCivil: string
+
   @OneToOne(() => Codigos, codigo => codigo.empleado)
     codigo: Codigos
+
+  @ManyToOne(() => Nacionalidad, nacionalidad => nacionalidad.empleado)
+  @JoinColumn({ name: 'id_nacionalidad', referencedColumnName: 'id_nacionalidad' })
+    nacionalidad: Nacionalidad
+
+  @ManyToOne(() => Estado, (estado) => estado.empleado)
+  @JoinColumn({ name: 'id_estadoNac', referencedColumnName: 'id_estado' })
+    estado_nacimiento: Estado
+
+  @ManyToOne(() => EstadoCivil, (estado_civil) => estado_civil.empleado)
+  @JoinColumn({ name: 'edoCivil', referencedColumnName: 'clave' })
+    estado_civil: EstadoCivil
+
+  @ManyToOne(() => HSupervisor, (supervisor) => supervisor.id_rel)
+  @JoinColumn({ name: 'id_emp', referencedColumnName: 'id_rel' })
+    supervisor: HSupervisor
+
+  @OneToMany(() => HSupervisor, (hsupervisor) => hsupervisor.empleado)
+    hSupervisor: HSupervisor[]
 }

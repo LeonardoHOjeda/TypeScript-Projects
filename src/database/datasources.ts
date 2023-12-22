@@ -1,9 +1,8 @@
 import { DataSource } from 'typeorm'
 import { settings } from '@/config/settings'
 import migrations from './migrations'
-import { Empleado } from '@/entities/empleados'
+import { Empleado, Nacionalidad, Estado, Codigos, EstadoCivil, HSupervisor, TSupervisor } from '@/entities/empleados'
 import { Configuracion } from '@/entities/configuracion.entity'
-import { Codigos } from '@/entities/empleados/codigos.entity'
 import { RazonSocial } from '@/entities/empleados/razon_social.entity'
 
 const { DB } = settings
@@ -17,7 +16,7 @@ export const AppDataSource = new DataSource({
   database: DB.NAME,
   synchronize: false,
   logging: false,
-  entities: [Empleado, Configuracion, Codigos, RazonSocial],
+  entities: [Empleado, Configuracion, Codigos, RazonSocial, Nacionalidad, Estado, EstadoCivil, TSupervisor, HSupervisor],
   migrations,
   extra: {
     trustServerCertificate: true
