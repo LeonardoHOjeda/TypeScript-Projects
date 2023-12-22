@@ -4,6 +4,8 @@ import { Nacionalidad } from './nacionalidad.entity'
 import { Estado } from './estado.entity'
 import { EstadoCivil } from './estado_civil.entity'
 import { HSupervisor } from './supervisor.entity'
+import { HMedioPago } from '../nomina/metodo_pago.entity'
+import { HBanco } from '../nomina/banco.entity'
 
 @Entity('Empleados')
 export class Empleado extends BaseEntity {
@@ -64,6 +66,15 @@ export class Empleado extends BaseEntity {
   @OneToOne(() => Codigos, codigo => codigo.empleado)
     codigo: Codigos
 
+  @OneToMany(() => HSupervisor, (hsupervisor) => hsupervisor.empleado)
+    hSupervisor: HSupervisor[]
+
+  @OneToMany(() => HMedioPago, (hmediopago) => hmediopago.empleado)
+    hMedioPago: HMedioPago[]
+
+  @OneToMany(() => HBanco, (hbanco) => hbanco.empleado)
+    hbanco: HBanco[]
+
   @ManyToOne(() => Nacionalidad, nacionalidad => nacionalidad.empleado)
   @JoinColumn({ name: 'id_nacionalidad', referencedColumnName: 'id_nacionalidad' })
     nacionalidad: Nacionalidad
@@ -79,7 +90,4 @@ export class Empleado extends BaseEntity {
   @ManyToOne(() => HSupervisor, (supervisor) => supervisor.id_rel)
   @JoinColumn({ name: 'id_emp', referencedColumnName: 'id_rel' })
     supervisor: HSupervisor
-
-  @OneToMany(() => HSupervisor, (hsupervisor) => hsupervisor.empleado)
-    hSupervisor: HSupervisor[]
 }
