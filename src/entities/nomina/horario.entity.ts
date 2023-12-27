@@ -30,7 +30,7 @@ export class HHorario extends BaseEntity {
   @Column()
     movimiento: string
 
-  @ManyToOne(() => Empleado, (empleado) => empleado.hhorario)
+  @ManyToOne(() => Empleado, (empleado) => empleado.hHorario)
   @JoinColumn({ name: 'id_emp', referencedColumnName: 'id_emp' })
     empleado: Empleado
 

@@ -1,11 +1,5 @@
 import { Empleado, HSupervisor } from '@/entities/empleados'
-import { HBanco, HLinea, HMedioPago } from '@/entities/nomina'
-import { HArea } from '@/entities/nomina/area.entity'
-import { HCategoria } from '@/entities/nomina/categoria.entity'
-import { HCCosto } from '@/entities/nomina/centro_costo.entity'
-import { HDepartamento } from '@/entities/nomina/departamento.entity'
-import { HHorario } from '@/entities/nomina/horario.entity'
-import { HTurno } from '@/entities/nomina/turno.entity'
+import { HBanco, HLinea, HMedioPago, HArea, HCategoria, HCCosto, HDepartamento, HHorario, HTurno, HPlanta, HManoObra } from '@/entities/nomina'
 // import { Supervisor } from '@/entities/empleados/supervisor.entity'
 import { HTTPError } from '@/middlewares/error_handler'
 
@@ -15,7 +9,12 @@ export class EmpleadoService {
       relations: {
         nacionalidad: true,
         estado_nacimiento: true,
-        estado_civil: true
+        estado_civil: true,
+        direccion: {
+          estado: true,
+          ciudad: true,
+          colonia: true
+        }
       },
       where: { noempx }
     })
@@ -33,6 +32,8 @@ export class EmpleadoService {
       this.findCentroCosto(id_emp),
       this.findDepartamento(id_emp),
       this.findLinea(id_emp),
+      this.findPlanta(id_emp),
+      this.findManoObra(id_emp),
       empleado
     ]
 
@@ -50,7 +51,9 @@ export class EmpleadoService {
         categoria: result[6],
         centroCosto: result[7],
         departamento: result[8],
-        linea: result[9]
+        linea: result[9],
+        planta: result[10],
+        manoObra: result[11]
       }
     }
   }
@@ -174,5 +177,29 @@ export class EmpleadoService {
     if (linea == null) return {}
 
     return linea.linea
+  }
+
+  async findPlanta (id_emp: number): Promise<HPlanta | object> {
+    const planta = await HPlanta.findOne({
+      relations: { planta: true },
+      order: { fecha: 'DESC' },
+      where: { id_emp }
+    })
+
+    if (planta == null) return {}
+
+    return planta.planta
+  }
+
+  async findManoObra (id_emp: number): Promise<HManoObra | object> {
+    const manoObra = await HManoObra.findOne({
+      relations: { manoObra: true },
+      order: { fecha: 'DESC' },
+      where: { id_emp }
+    })
+
+    if (manoObra == null) return {}
+
+    return manoObra.manoObra
   }
 }

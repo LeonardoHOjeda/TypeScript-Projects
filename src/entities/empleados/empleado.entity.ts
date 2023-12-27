@@ -1,18 +1,10 @@
 import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm'
 import { Codigos } from './codigos.entity'
 import { Nacionalidad } from './nacionalidad.entity'
-import { Estado } from './estado.entity'
+import { Direccion, Estado } from './direccion.entity'
 import { EstadoCivil } from './estado_civil.entity'
 import { HSupervisor } from './supervisor.entity'
-import { HMedioPago } from '../nomina/metodo_pago.entity'
-import { HBanco } from '../nomina/banco.entity'
-import { HHorario } from '../nomina/horario.entity'
-import { HTurno } from '../nomina/turno.entity'
-import { HArea } from '../nomina/area.entity'
-import { HCategoria } from '../nomina/categoria.entity'
-import { HCCosto } from '../nomina/centro_costo.entity'
-import { HDepartamento } from '../nomina/departamento.entity'
-import { HLinea } from '../nomina'
+import { HMedioPago, HBanco, HHorario, HTurno, HArea, HCategoria, HCCosto, HDepartamento, HLinea, HPlanta, HManoObra } from '../nomina'
 
 @Entity('Empleados')
 export class Empleado extends BaseEntity {
@@ -30,6 +22,9 @@ export class Empleado extends BaseEntity {
 
   @Column()
     apMaterno: string
+
+  @Column()
+    email: string
 
   @Column()
     imss: string
@@ -86,6 +81,9 @@ export class Empleado extends BaseEntity {
     id_estadoNac: number
 
   @Column()
+    id_direccion: number
+
+  @Column()
     edoCivil: string
 
   @OneToOne(() => Codigos, codigo => codigo.empleado)
@@ -98,28 +96,34 @@ export class Empleado extends BaseEntity {
     hMedioPago: HMedioPago[]
 
   @OneToMany(() => HBanco, (hbanco) => hbanco.empleado)
-    hbanco: HBanco[]
+    hBanco: HBanco[]
 
   @OneToMany(() => HHorario, (hhorario) => hhorario.empleado)
-    hhorario: HHorario[]
+    hHorario: HHorario[]
 
   @OneToMany(() => HTurno, (hturno) => hturno.empleado)
-    hturno: HTurno[]
+    hTurno: HTurno[]
 
   @OneToMany(() => HArea, (harea) => harea.empleado)
-    harea: HArea[]
+    hArea: HArea[]
 
   @OneToMany(() => HCategoria, (hcategoria) => hcategoria.empleado)
-    hcategoria: HCategoria[]
+    hCategoria: HCategoria[]
 
   @OneToMany(() => HCCosto, (hccosto) => hccosto.empleado)
-    hccosto: HCCosto[]
+    hCCosto: HCCosto[]
 
   @OneToMany(() => HDepartamento, (hdepartamento) => hdepartamento.empleado)
-    hdepartamento: HDepartamento[]
+    hDepartamento: HDepartamento[]
 
   @OneToMany(() => HLinea, (hlinea) => hlinea.empleado)
-    hlinea: HLinea[]
+    hLinea: HLinea[]
+
+  @OneToMany(() => HPlanta, (hplanta) => hplanta.empleado)
+    hplanta: HPlanta[]
+
+  @OneToMany(() => HManoObra, (hmanoobra) => hmanoobra.empleado)
+    hManoObra: HManoObra[]
 
   @ManyToOne(() => Nacionalidad, nacionalidad => nacionalidad.empleado)
   @JoinColumn({ name: 'id_nacionalidad', referencedColumnName: 'id_nacionalidad' })
@@ -132,6 +136,10 @@ export class Empleado extends BaseEntity {
   @ManyToOne(() => EstadoCivil, (estado_civil) => estado_civil.empleado)
   @JoinColumn({ name: 'edoCivil', referencedColumnName: 'clave' })
     estado_civil: EstadoCivil
+
+  @ManyToOne(() => Direccion, (direccion) => direccion.empleado)
+  @JoinColumn({ name: 'id_direccion', referencedColumnName: 'id_direccion' })
+    direccion: Direccion
 
   @ManyToOne(() => HSupervisor, (supervisor) => supervisor.id_rel)
   @JoinColumn({ name: 'id_emp', referencedColumnName: 'id_rel' })

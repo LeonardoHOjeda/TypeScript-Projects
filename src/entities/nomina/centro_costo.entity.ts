@@ -30,7 +30,7 @@ export class HCCosto extends BaseEntity {
   @Column()
     movimiento: string
 
-  @ManyToOne(() => Empleado, (empleado) => empleado.hccosto)
+  @ManyToOne(() => Empleado, (empleado) => empleado.hCCosto)
   @JoinColumn({ name: 'id_emp', referencedColumnName: 'id_emp' })
     empleado: Empleado
 

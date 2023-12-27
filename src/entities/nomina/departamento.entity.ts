@@ -30,7 +30,7 @@ export class HDepartamento extends BaseEntity {
   @Column()
     movimiento: string
 
-  @ManyToOne(() => Empleado, (empleado) => empleado.hdepartamento)
+  @ManyToOne(() => Empleado, (empleado) => empleado.hDepartamento)
   @JoinColumn({ name: 'id_emp', referencedColumnName: 'id_emp' })
     empleado: Empleado
 
