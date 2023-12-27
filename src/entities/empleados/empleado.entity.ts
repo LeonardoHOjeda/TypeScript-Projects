@@ -10,6 +10,9 @@ import { HHorario } from '../nomina/horario.entity'
 import { HTurno } from '../nomina/turno.entity'
 import { HArea } from '../nomina/area.entity'
 import { HCategoria } from '../nomina/categoria.entity'
+import { HCCosto } from '../nomina/centro_costo.entity'
+import { HDepartamento } from '../nomina/departamento.entity'
+import { HLinea } from '../nomina'
 
 @Entity('Empleados')
 export class Empleado extends BaseEntity {
@@ -108,6 +111,15 @@ export class Empleado extends BaseEntity {
 
   @OneToMany(() => HCategoria, (hcategoria) => hcategoria.empleado)
     hcategoria: HCategoria[]
+
+  @OneToMany(() => HCCosto, (hccosto) => hccosto.empleado)
+    hccosto: HCCosto[]
+
+  @OneToMany(() => HDepartamento, (hdepartamento) => hdepartamento.empleado)
+    hdepartamento: HDepartamento[]
+
+  @OneToMany(() => HLinea, (hlinea) => hlinea.empleado)
+    hlinea: HLinea[]
 
   @ManyToOne(() => Nacionalidad, nacionalidad => nacionalidad.empleado)
   @JoinColumn({ name: 'id_nacionalidad', referencedColumnName: 'id_nacionalidad' })

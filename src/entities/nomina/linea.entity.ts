@@ -1,20 +1,20 @@
 import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { Empleado } from '../empleados'
 
-@Entity('TCategorias')
-export class TCategoria extends BaseEntity {
+@Entity('TLineas')
+export class TLinea extends BaseEntity {
   @PrimaryGeneratedColumn()
-    id_categorias: number
+    id_lineas: number
 
   @Column()
-    categ: string
+    linea: string
 
   @Column()
-    desCat: string
+    descr: string
 }
 
-@Entity('HCategorias')
-export class HCategoria extends BaseEntity {
+@Entity('HLineas')
+export class HLinea extends BaseEntity {
   @PrimaryGeneratedColumn()
     id_emp: number
 
@@ -30,11 +30,11 @@ export class HCategoria extends BaseEntity {
   @Column()
     movimiento: string
 
-  @ManyToOne(() => Empleado, (empleado) => empleado.hcategoria)
+  @ManyToOne(() => Empleado, (empleado) => empleado.hlinea)
   @JoinColumn({ name: 'id_emp', referencedColumnName: 'id_emp' })
     empleado: Empleado
 
-  @ManyToOne(() => TCategoria)
-  @JoinColumn({ name: 'id_rel', referencedColumnName: 'id_categorias' })
-    categoria: TCategoria
+  @ManyToOne(() => TLinea)
+  @JoinColumn({ name: 'id_rel', referencedColumnName: 'id_lineas' })
+    linea: TLinea
 }

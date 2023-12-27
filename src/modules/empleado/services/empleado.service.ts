@@ -1,7 +1,9 @@
 import { Empleado, HSupervisor } from '@/entities/empleados'
-import { HBanco, HMedioPago } from '@/entities/nomina'
+import { HBanco, HLinea, HMedioPago } from '@/entities/nomina'
 import { HArea } from '@/entities/nomina/area.entity'
 import { HCategoria } from '@/entities/nomina/categoria.entity'
+import { HCCosto } from '@/entities/nomina/centro_costo.entity'
+import { HDepartamento } from '@/entities/nomina/departamento.entity'
 import { HHorario } from '@/entities/nomina/horario.entity'
 import { HTurno } from '@/entities/nomina/turno.entity'
 // import { Supervisor } from '@/entities/empleados/supervisor.entity'
@@ -28,6 +30,9 @@ export class EmpleadoService {
       this.findTurno(id_emp),
       this.findArea(id_emp),
       this.findCategoria(id_emp),
+      this.findCentroCosto(id_emp),
+      this.findDepartamento(id_emp),
+      this.findLinea(id_emp),
       empleado
     ]
 
@@ -42,7 +47,10 @@ export class EmpleadoService {
         horario: result[3],
         turno: result[4],
         area: result[5],
-        categoria: result[6]
+        categoria: result[6],
+        centroCosto: result[7],
+        departamento: result[8],
+        linea: result[9]
       }
     }
   }
@@ -130,5 +138,41 @@ export class EmpleadoService {
     if (categoria == null) return {}
 
     return categoria.categoria
+  }
+
+  async findCentroCosto (id_emp: number): Promise<HCCosto | object> {
+    const centroCosto = await HCCosto.findOne({
+      relations: { centro_costo: true },
+      order: { fecha: 'DESC' },
+      where: { id_emp }
+    })
+
+    if (centroCosto == null) return {}
+
+    return centroCosto.centro_costo
+  }
+
+  async findDepartamento (id_emp: number): Promise<HDepartamento | object> {
+    const departamento = await HDepartamento.findOne({
+      relations: { departamento: true },
+      order: { fecha: 'DESC' },
+      where: { id_emp }
+    })
+
+    if (departamento == null) return {}
+
+    return departamento.departamento
+  }
+
+  async findLinea (id_emp: number): Promise<HLinea | object> {
+    const linea = await HLinea.findOne({
+      relations: { linea: true },
+      order: { fecha: 'DESC' },
+      where: { id_emp }
+    })
+
+    if (linea == null) return {}
+
+    return linea.linea
   }
 }
