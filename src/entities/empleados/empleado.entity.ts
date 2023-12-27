@@ -4,6 +4,7 @@ import { Nacionalidad } from './nacionalidad.entity'
 import { Direccion, Estado } from './direccion.entity'
 import { EstadoCivil } from './estado_civil.entity'
 import { HSupervisor } from './supervisor.entity'
+import { Contacto } from './contacto.entity'
 import { HMedioPago, HBanco, HHorario, HTurno, HArea, HCategoria, HCCosto, HDepartamento, HLinea, HPlanta, HManoObra } from '../nomina'
 
 @Entity('Empleados')
@@ -88,6 +89,9 @@ export class Empleado extends BaseEntity {
 
   @OneToOne(() => Codigos, codigo => codigo.empleado)
     codigo: Codigos
+
+  @OneToOne(() => Contacto, contacto => contacto.empleado)
+    contacto: Contacto
 
   @OneToMany(() => HSupervisor, (hsupervisor) => hsupervisor.empleado)
     hSupervisor: HSupervisor[]

@@ -1,6 +1,6 @@
 import { Empleado, HSupervisor } from '@/entities/empleados'
+import { Contacto } from '@/entities/empleados/contacto.entity'
 import { HBanco, HLinea, HMedioPago, HArea, HCategoria, HCCosto, HDepartamento, HHorario, HTurno, HPlanta, HManoObra } from '@/entities/nomina'
-// import { Supervisor } from '@/entities/empleados/supervisor.entity'
 import { HTTPError } from '@/middlewares/error_handler'
 
 export class EmpleadoService {
@@ -34,6 +34,7 @@ export class EmpleadoService {
       this.findLinea(id_emp),
       this.findPlanta(id_emp),
       this.findManoObra(id_emp),
+      this.findNombresContacto(id_emp),
       empleado
     ]
 
@@ -53,7 +54,8 @@ export class EmpleadoService {
         departamento: result[8],
         linea: result[9],
         planta: result[10],
-        manoObra: result[11]
+        manoObra: result[11],
+        contacto: result[12]
       }
     }
   }
@@ -201,5 +203,23 @@ export class EmpleadoService {
     if (manoObra == null) return {}
 
     return manoObra.manoObra
+  }
+
+  async findNombresContacto (id_emp: number): Promise<any> {
+    const contacto = await Contacto.findOne({
+      select: {
+        id_parentesco: true,
+        nombre: true,
+        apPaterno: true,
+        apMaterno: true,
+        telefonoE: true,
+        celular: true
+      },
+      where: { id_emp, id_parentesco: 6 }
+    })
+
+    if (contacto == null) return {}
+
+    return contacto
   }
 }
