@@ -1,5 +1,9 @@
 import { Empleado, HSupervisor } from '@/entities/empleados'
 import { HBanco, HMedioPago } from '@/entities/nomina'
+import { HArea } from '@/entities/nomina/area.entity'
+import { HCategoria } from '@/entities/nomina/categoria.entity'
+import { HHorario } from '@/entities/nomina/horario.entity'
+import { HTurno } from '@/entities/nomina/turno.entity'
 // import { Supervisor } from '@/entities/empleados/supervisor.entity'
 import { HTTPError } from '@/middlewares/error_handler'
 
@@ -9,8 +13,7 @@ export class EmpleadoService {
       relations: {
         nacionalidad: true,
         estado_nacimiento: true,
-        estado_civil: true,
-        supervisor: true
+        estado_civil: true
       },
       where: { noempx }
     })
@@ -21,16 +24,26 @@ export class EmpleadoService {
       this.findSupervisor(id_emp),
       this.findMetodoPago(id_emp),
       this.findBanco(id_emp),
+      this.findHorario(id_emp),
+      this.findTurno(id_emp),
+      this.findArea(id_emp),
+      this.findCategoria(id_emp),
       empleado
     ]
 
     const result = await Promise.all(promises)
 
     return {
-      ...result[1],
-      supervisor: result[0],
-      metodoPago: result[1],
-      banco: result[2]
+      empleado,
+      nomina: {
+        supervisor: result[0],
+        metodoPago: result[1],
+        banco: result[2],
+        horario: result[3],
+        turno: result[4],
+        area: result[5],
+        categoria: result[6]
+      }
     }
   }
 
@@ -71,25 +84,51 @@ export class EmpleadoService {
     return banco.banco
   }
 
-  async findAll (): Promise<Empleado[]> {
-    const empleados = await Empleado.find()
+  async findHorario (id_emp: number): Promise<HHorario | object> {
+    const horario = await HHorario.findOne({
+      relations: { horario: true },
+      order: { fecha: 'DESC' },
+      where: { id_emp }
+    })
 
-    return empleados
+    if (horario == null) return {}
+
+    return horario.horario
   }
 
-  async update (id: any, body: any): Promise<Object> {
-    return {}
+  async findTurno (id_emp: number): Promise<HTurno | object> {
+    const turno = await HTurno.findOne({
+      relations: { turno: true },
+      order: { fecha: 'DESC' },
+      where: { id_emp }
+    })
+
+    if (turno == null) return {}
+
+    return turno.turno
   }
 
-  async store (body: any): Promise<Object> {
-    return {}
+  async findArea (id_emp: number): Promise<HArea | object> {
+    const area = await HArea.findOne({
+      relations: { area: true },
+      order: { fecha: 'DESC' },
+      where: { id_emp }
+    })
+
+    if (area == null) return {}
+
+    return area.area
   }
 
-  async destroy (id: any): Promise<Object> {
-    return {}
-  }
+  async findCategoria (id_emp: number): Promise<HCategoria | object> {
+    const categoria = await HCategoria.findOne({
+      relations: { categoria: true },
+      order: { fecha: 'DESC' },
+      where: { id_emp }
+    })
 
-  async delete (id: any): Promise<Object> {
-    return {}
+    if (categoria == null) return {}
+
+    return categoria.categoria
   }
 }

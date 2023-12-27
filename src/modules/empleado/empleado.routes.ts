@@ -4,8 +4,6 @@ import * as empleadoController from './empleado.controller'
 
 const router = Router()
 
-router.get('/', empleadoController.show)
-//
-// router.put('/:id', updateValidators, empleadoController.update)
+router.get('/', empleadoController.datosGenerales)
 
 export default router

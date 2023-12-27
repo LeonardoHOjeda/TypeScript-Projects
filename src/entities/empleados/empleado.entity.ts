@@ -6,6 +6,10 @@ import { EstadoCivil } from './estado_civil.entity'
 import { HSupervisor } from './supervisor.entity'
 import { HMedioPago } from '../nomina/metodo_pago.entity'
 import { HBanco } from '../nomina/banco.entity'
+import { HHorario } from '../nomina/horario.entity'
+import { HTurno } from '../nomina/turno.entity'
+import { HArea } from '../nomina/area.entity'
+import { HCategoria } from '../nomina/categoria.entity'
 
 @Entity('Empleados')
 export class Empleado extends BaseEntity {
@@ -46,6 +50,24 @@ export class Empleado extends BaseEntity {
     issste: string
 
   @Column()
+    fecha_alta: string
+
+  @Column()
+    fechaPerPrueba: string
+
+  @Column()
+    fechaTerContrato: string
+
+  @Column()
+    fechaRevContrato: string
+
+  @Column()
+    gpo_imss: string
+
+  @Column()
+    cuenta_invernomina: string
+
+  @Column()
     nip: string
 
   @Column()
@@ -74,6 +96,18 @@ export class Empleado extends BaseEntity {
 
   @OneToMany(() => HBanco, (hbanco) => hbanco.empleado)
     hbanco: HBanco[]
+
+  @OneToMany(() => HHorario, (hhorario) => hhorario.empleado)
+    hhorario: HHorario[]
+
+  @OneToMany(() => HTurno, (hturno) => hturno.empleado)
+    hturno: HTurno[]
+
+  @OneToMany(() => HArea, (harea) => harea.empleado)
+    harea: HArea[]
+
+  @OneToMany(() => HCategoria, (hcategoria) => hcategoria.empleado)
+    hcategoria: HCategoria[]
 
   @ManyToOne(() => Nacionalidad, nacionalidad => nacionalidad.empleado)
   @JoinColumn({ name: 'id_nacionalidad', referencedColumnName: 'id_nacionalidad' })

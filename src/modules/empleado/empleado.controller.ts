@@ -2,8 +2,10 @@ import { NextFunction, Request, Response } from 'express'
 import { EmpleadoService } from './services'
 import logger from '@/helpers/logger'
 
-export async function show (req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function datosGenerales (req: Request, res: Response, next: NextFunction): Promise<void> {
   const { id_emp, noempx } = req.user!
+
+  console.log('Id: ', id_emp)
 
   const finder = new EmpleadoService()
   try {
