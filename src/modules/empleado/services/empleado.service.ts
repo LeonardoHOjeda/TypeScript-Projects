@@ -222,4 +222,6 @@ export class EmpleadoService {
 
     return contacto
   }
+
+  // TODO: Actualizar contraseña del empleado
 }
