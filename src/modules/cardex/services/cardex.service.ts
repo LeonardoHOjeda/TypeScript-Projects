@@ -20,4 +20,6 @@ export class CardexService {
 
     return years
   }
+
+  // TODO: Implementar meses del cardex
 }

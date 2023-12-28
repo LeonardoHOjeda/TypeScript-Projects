@@ -5,6 +5,7 @@ import { Empleado, Nacionalidad, Estado, Codigos, EstadoCivil, HSupervisor, TSup
 import { Configuracion } from '@/entities/configuracion.entity'
 import { HMedioPago, TMedioPago, TBanco, HBanco, HHorario, THorario, TTurno, HTurno, TArea, HArea, TCategoria, HCategoria, TCCosto, HCCosto, TDepartamento, HDepartamento, TLinea, HLinea, TPlanta, HPlanta, TManoObra, HManoObra } from '@/entities/nomina'
 import { Cardex, Llaves } from '@/entities/cardex.entity'
+import { Concepto, Prestamo } from '@/entities/prestamo.entity'
 
 const { DB } = settings
 
@@ -16,8 +17,8 @@ export const AppDataSource = new DataSource({
   password: DB.PASSWORD,
   database: DB.NAME,
   synchronize: false,
-  logging: false,
-  entities: [Empleado, Configuracion, Codigos, RazonSocial, Nacionalidad, Estado, EstadoCivil, TSupervisor, HSupervisor, HMedioPago, TMedioPago, TBanco, HBanco, THorario, HHorario, TTurno, HTurno, TArea, HArea, TCategoria, HCategoria, TCCosto, HCCosto, TDepartamento, HDepartamento, TLinea, HLinea, TPlanta, HPlanta, TManoObra, HManoObra, Direccion, Ciudad, Colonia, Contacto, Cardex, Llaves],
+  logging: true,
+  entities: [Empleado, Configuracion, Codigos, RazonSocial, Nacionalidad, Estado, EstadoCivil, TSupervisor, HSupervisor, HMedioPago, TMedioPago, TBanco, HBanco, THorario, HHorario, TTurno, HTurno, TArea, HArea, TCategoria, HCategoria, TCCosto, HCCosto, TDepartamento, HDepartamento, TLinea, HLinea, TPlanta, HPlanta, TManoObra, HManoObra, Direccion, Ciudad, Colonia, Contacto, Cardex, Llaves, Concepto, Prestamo],
   migrations,
   extra: {
     trustServerCertificate: true
