@@ -21,10 +21,19 @@ export class Prestamo extends BaseEntity {
     id_emp: number
 
   @Column()
-    status: string
+    id_concepto: number
 
   @Column()
-    id_concepto: string
+    status: string
+
+  @Column({ type: 'float' })
+    saldoIncial: number
+
+  @Column({ type: 'float' })
+    descuento: number
+
+  @Column({ type: 'float' })
+    saldoActual: number
 
   @ManyToOne(() => Concepto, concepto => concepto.prestamos)
   @JoinColumn({ name: 'id_concepto', referencedColumnName: 'id_concepto' })

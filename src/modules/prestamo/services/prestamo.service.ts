@@ -14,8 +14,14 @@ export class PrestamoService {
     return prestamos
   }
 
-  async findOne (id: any): Promise<Object> {
-    return {}
+  async findOne (id_emp: number, id_concepto: number): Promise<Prestamo[]> {
+    const prestamo = await Prestamo.find({
+      select: ['id_concepto', 'id_prestamo', 'saldoIncial', 'descuento', 'saldoActual'],
+      relations: { concepto: true },
+      where: { id_emp, id_concepto, status: 'A' }
+    })
+
+    return prestamo
   }
 
   async update (id: any, body: any): Promise<Object> {

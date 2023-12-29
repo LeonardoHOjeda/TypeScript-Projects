@@ -1,32 +1,28 @@
 import { NextFunction, Request, Response } from 'express'
-import { PrestamoService } from './services'
+import { ReciboService } from './services'
 import logger from '@/helpers/logger'
 
-export async function index (req: Request, res: Response, next: NextFunction): Promise<void> {
-  const finder = new PrestamoService()
+export async function years (req: Request, res: Response, next: NextFunction): Promise<void> {
   const { id_emp } = req.user!
+  const finder = new ReciboService()
   try {
-    const prestamos = await finder.findAll(id_emp)
+    const years = await finder.findYears(id_emp)
 
-    res.json(prestamos)
+    res.json(years)
   } catch (error: any) {
-    logger.error('Error al obtener los prestamos', error)
-    next(error)
+    logger.error('Error al obtener los años de la nomina: ', error)
   }
 }
 
+/**
+ * Return one instance of entity
+ * @param req
+ * @param res
+ * @param next
+ */
 export async function show (req: Request, res: Response, next: NextFunction): Promise<void> {
   const { id } = req.params
-  const { id_emp } = req.user!
-  const finder = new PrestamoService()
-  try {
-    const prestamo = await finder.findOne(id_emp, Number(id))
-
-    res.json(prestamo)
-  } catch (error: any) {
-    logger.error('Error al obtener el prestamo', error)
-    next(error)
-  }
+  const finder = new ReciboService()
 }
 
 /**
@@ -36,7 +32,7 @@ export async function show (req: Request, res: Response, next: NextFunction): Pr
  * @param next
  */
 export async function store (req: Request, res: Response, next: NextFunction): Promise<void> {
-  const saver = new PrestamoService()
+  const saver = new ReciboService()
 }
 
 /**
@@ -47,7 +43,7 @@ export async function store (req: Request, res: Response, next: NextFunction): P
  */
 export async function update (req: Request, res: Response, next: NextFunction): Promise<void> {
   const { id } = req.params
-  const updater = new PrestamoService()
+  const updater = new ReciboService()
 }
 
 /**
@@ -58,5 +54,5 @@ export async function update (req: Request, res: Response, next: NextFunction): 
  */
 export async function destroy (req: Request, res: Response, next: NextFunction): Promise<void> {
   const { id } = req.params
-  const destroyer = new PrestamoService()
+  const destroyer = new ReciboService()
 }
