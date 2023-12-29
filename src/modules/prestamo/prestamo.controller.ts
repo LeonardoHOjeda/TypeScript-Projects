@@ -28,35 +28,3 @@ export async function show (req: Request, res: Response, next: NextFunction): Pr
     next(error)
   }
 }
-
-/**
- * Save an entity
- * @param req
- * @param res
- * @param next
- */
-export async function store (req: Request, res: Response, next: NextFunction): Promise<void> {
-  const saver = new PrestamoService()
-}
-
-/**
- * Update an entity
- * @param req
- * @param res
- * @param next
- */
-export async function update (req: Request, res: Response, next: NextFunction): Promise<void> {
-  const { id } = req.params
-  const updater = new PrestamoService()
-}
-
-/**
- * Destroy one instance of an entity
- * @param req
- * @param res
- * @param next
- */
-export async function destroy (req: Request, res: Response, next: NextFunction): Promise<void> {
-  const { id } = req.params
-  const destroyer = new PrestamoService()
-}

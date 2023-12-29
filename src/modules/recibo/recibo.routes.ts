@@ -1,17 +1,20 @@
 import { Router } from 'express'
 import * as reciboController from './recibo.controller'
-import { storeValidators, updateValidators } from './recibo.validator'
 
 const router = Router()
 
 router.get('/years', reciboController.years)
 //
-router.get('/:id', reciboController.show)
+router.get('/empresa', reciboController.empresa)
 //
-router.post('/', storeValidators, reciboController.store)
+router.get('/registro', reciboController.registroPatronal)
 //
-router.put('/:id', updateValidators, reciboController.update)
+router.get('/meses/:year', reciboController.meses)
 //
-router.delete('/:id', reciboController.destroy)
+router.get('/periodos/:mes/:year', reciboController.periodos)
+//
+router.get('/percepciones/:periodo', reciboController.percepciones)
+//
+router.get('/deducciones/:periodo', reciboController.deducciones)
 
 export default router
