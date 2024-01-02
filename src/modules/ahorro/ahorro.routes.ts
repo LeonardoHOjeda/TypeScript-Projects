@@ -1,17 +1,12 @@
 import { Router } from 'express'
 import * as ahorroController from './ahorro.controller'
-import { storeValidators, updateValidators } from './ahorro.validator'
 
 const router = Router()
 
-router.get('/', ahorroController.index)
+router.get('/fechas', ahorroController.fechas)
 //
-router.get('/:id', ahorroController.show)
+router.get('/conceptos', ahorroController.conceptos)
 //
-router.post('/', storeValidators, ahorroController.store)
-//
-router.put('/:id', updateValidators, ahorroController.update)
-//
-router.delete('/:id', ahorroController.destroy)
+router.get('/ahorro', ahorroController.ahorro)
 
 export default router

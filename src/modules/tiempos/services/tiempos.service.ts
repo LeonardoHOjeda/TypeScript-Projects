@@ -48,19 +48,42 @@ export class TiemposService {
     return Object.values(filteredData)
   }
 
-  async update (id: any, body: any): Promise<Object> {
-    return {}
-  }
+  async findPeriodos (id_cia: number): Promise<any> {
+    const periodos = await Tiempos.query(
+      `
+      SELECT TOP 5 fecha_periodo, periodo 
+      FROM (
+        SELECT 
+            CAST(CONVERT(VARCHAR(10), FechaIni, 111)  AS varchar)+'-'+CAST(CONVERT(VARCHAR(10), FechaFin, 111)  AS varchar) AS fecha_periodo, 
+            CAST(CONVERT(VARCHAR(10), FechaIni, 105)  AS varchar)+' al '+CAST(CONVERT(VARCHAR(10), FechaFin, 105)  AS varchar) AS periodo,
+            FechaFinTransfer
+        FROM 
+            calennomina
+        WHERE 
+          año IN (YEAR(GETDATE()), YEAR(GETDATE()) - 1) AND
+            id_cia = @0 AND 
+            parcial = 0 AND 
+            GETDATE() BETWEEN FechaIniTransfer AND FechaFinTransfer 
+  
+        UNION 
+  
+        SELECT 
+            CAST(CONVERT(VARCHAR(10), FechaIni, 111)  AS varchar)+'-'+CAST(CONVERT(VARCHAR(10), FechaFin, 111)  AS varchar) AS id_periodo, 
+            CAST(CONVERT(VARCHAR(10), FechaIni, 105)  AS varchar)+' al '+CAST(CONVERT(VARCHAR(10), FechaFin, 105)  AS varchar) AS periodo,
+            FechaFinTransfer
+        FROM 
+            calennomina
+        WHERE 
+          año IN (YEAR(GETDATE()), YEAR(GETDATE()) - 1) AND
+            id_cia = @0 AND 
+            parcial = 0 AND 
+            FechaFinTransfer < GETDATE()
+      ) fechas
+      ORDER BY 
+        FechaFinTransfer DESC
+      `, [id_cia]
+    )
 
-  async store (body: any): Promise<Object> {
-    return {}
-  }
-
-  async destroy (id: any): Promise<Object> {
-    return {}
-  }
-
-  async delete (id: any): Promise<Object> {
-    return {}
+    return periodos
   }
 }

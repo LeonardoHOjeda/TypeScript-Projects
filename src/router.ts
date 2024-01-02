@@ -21,6 +21,6 @@ router.use('/api/prestamos', authenticate, prestamoRouter)
 router.use('/api/recibos', authenticate, recibosRouter)
 router.use('/api/vacaciones', authenticate, vacacionesRouter)
 router.use('/api/tiempos', authenticate, tiemposRouter)
-router.use('/api/ahorro', authenticate, ahorroRouter)
+router.use('/api/fondo', authenticate, ahorroRouter)
 
 export default router

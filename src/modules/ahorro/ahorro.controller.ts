@@ -2,57 +2,46 @@ import { NextFunction, Request, Response } from 'express'
 import { AhorroService } from './services'
 import logger from '@/helpers/logger'
 
-export async function index (req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function fechas (req: Request, res: Response, next: NextFunction): Promise<void> {
   const { id_cia } = req.user!
-  const finder = new AhorroService()
-  try {
-    const cortes = await finder.findAll(id_cia)
 
-    res.json(cortes)
+  const finder = new AhorroService()
+
+  try {
+    const fechas = await finder.findFechas(id_cia)
+
+    res.json(fechas)
   } catch (error: any) {
-    logger.error('Error al obtener los cortes de fondo de ahorro', error)
+    logger.error('Error al obtener los cortes de fondo de ahorro: ', error)
+    next(error)
   }
 }
 
-/**
- * Return one instance of entity
- * @param req
- * @param res
- * @param next
- */
-export async function show (req: Request, res: Response, next: NextFunction): Promise<void> {
-  const { id } = req.params
+export async function conceptos (req: Request, res: Response, next: NextFunction): Promise<void> {
   const finder = new AhorroService()
+
+  try {
+    const conceptos = await finder.findConceptos()
+
+    res.json(conceptos)
+  } catch (error: any) {
+    logger.error('Error al obtener los conceptos: ', error)
+    next(error)
+  }
 }
 
-/**
- * Save an entity
- * @param req
- * @param res
- * @param next
- */
-export async function store (req: Request, res: Response, next: NextFunction): Promise<void> {
-  const saver = new AhorroService()
-}
+export async function ahorro (req: Request, res: Response, next: NextFunction): Promise<void> {
+  const { id_emp } = req.user!
+  const { fechaInicio, fechaFin } = req.query
 
-/**
- * Update an entity
- * @param req
- * @param res
- * @param next
- */
-export async function update (req: Request, res: Response, next: NextFunction): Promise<void> {
-  const { id } = req.params
-  const updater = new AhorroService()
-}
+  const finder = new AhorroService()
 
-/**
- * Destroy one instance of an entity
- * @param req
- * @param res
- * @param next
- */
-export async function destroy (req: Request, res: Response, next: NextFunction): Promise<void> {
-  const { id } = req.params
-  const destroyer = new AhorroService()
+  try {
+    const ahorro = await finder.findAhorro(id_emp, (fechaInicio as string), (fechaFin as string))
+
+    res.json(ahorro)
+  } catch (error: any) {
+    logger.error('Error al obtener los ahorros: ', error)
+    next(error)
+  }
 }

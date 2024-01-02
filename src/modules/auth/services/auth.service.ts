@@ -55,7 +55,7 @@ export class AuthService {
   }
 
   private createToken (empleado: Empleado) {
-    return jwt.sign({ noempx: empleado.noempx, id_emp: empleado.id_emp }, settings.SECRET, {
+    return jwt.sign({ noempx: empleado.noempx, id_emp: empleado.id_emp, id_cia: empleado.id_cia }, settings.SECRET, {
       expiresIn: 86400
     })
   }

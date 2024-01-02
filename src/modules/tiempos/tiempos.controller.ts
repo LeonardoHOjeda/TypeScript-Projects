@@ -29,3 +29,19 @@ export async function index (req: Request, res: Response, next: NextFunction): P
     next(error)
   }
 }
+
+export async function periodos (req: Request, res: Response, next: NextFunction): Promise<void> {
+  const { id_cia } = req.user!
+
+  console.log('id_cia: ', id_cia)
+
+  try {
+    const finder = new TiemposService()
+    const periodos = await finder.findPeriodos(id_cia)
+
+    res.json(periodos)
+  } catch (error: any) {
+    logger.error('Error al obtener los periodos de un empleado: ', error)
+    next(error)
+  }
+}
