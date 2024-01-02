@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm'
+import { Tiempos } from './tiempos/tiempos.entity'
 
 @Entity('CardexxEmp')
 export class Cardex extends BaseEntity {
@@ -10,6 +11,9 @@ export class Cardex extends BaseEntity {
 
   @Column()
     diasa: string
+
+  @OneToMany(() => Tiempos, tiempos => tiempos.cardex)
+    tiempos: Tiempos[]
 }
 
 @Entity('TClaCardex')
