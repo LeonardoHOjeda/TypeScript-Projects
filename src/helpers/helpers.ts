@@ -1,3 +1,5 @@
+import { format } from 'date-fns'
+import { utcToZonedTime } from 'date-fns-tz'
 
 /*
 * Formatear fecha a formato dd/mm/yyyy
@@ -27,4 +29,21 @@ export function toLocalDate (date: string | Date) {
   const horaLocalString = horaLocal.toISOString().replace('Z', '')
 
   return horaLocalString
+}
+
+export const generarFolio = (id: number): string => {
+  const now = new Date()
+  const cstTimeZone = 'America/Mexico_City'
+  const cstDateTime = utcToZonedTime(now, cstTimeZone)
+
+  const year = format(cstDateTime, 'yy')
+  const month = format(cstDateTime, 'MM')
+  const day = format(cstDateTime, 'dd')
+  const hour = format(cstDateTime, 'HH')
+  const minute = format(cstDateTime, 'mm')
+  const second = format(cstDateTime, 'ss')
+  const prefix = 'K'
+  const numeroSolicitud = id < 10 ? '0' + id.toString() : id.toString()
+
+  return `${prefix}${numeroSolicitud}-${year}${month}${day}_${hour}${minute}${second}`
 }

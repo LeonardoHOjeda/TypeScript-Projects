@@ -24,6 +24,11 @@ Una vez descargado el repositorio, ejecutar el siguiente comando
 ## ORM
 - [typeorm](https://www.npmjs.com/package/typeorm)	
 
+## Versiones de Node y NPM
+- Node: 18.17.1
+- NPM: 9.6.7
+
+
 ## Docker Build
 Crear la imagen de docker
 `docker build -t registry.gobdigital.com/nomina/kiosko_api_backend:VERSION_NAME .`

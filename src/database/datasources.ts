@@ -10,7 +10,8 @@ import { CalendarioNomina, HNomina } from '@/entities/recibo'
 import { Registro, Tiempos } from '@/entities/tiempos'
 import { FondoAhorro } from '@/entities/fondo_ahorro.entity'
 import { Conceptos, ConfigConceptos } from '@/entities/conceptos.entity'
-import { Incapacidades, Incidencias, Justificantes, NivelesEstatus } from '@/entities/justificantes'
+import { Bitacora, Incapacidades, Incidencias, Justificantes, NivelesEstatus } from '@/entities/justificantes'
+import { Usuario } from '@/entities/usuario.entity'
 
 const { DB } = settings
 
@@ -22,8 +23,8 @@ export const AppDataSource = new DataSource({
   password: DB.PASSWORD,
   database: DB.NAME,
   synchronize: false,
-  logging: true,
-  entities: [Empleado, Configuracion, Codigos, RazonSocial, Nacionalidad, Estado, EstadoCivil, TSupervisor, HSupervisor, HMedioPago, TMedioPago, TBanco, HBanco, THorario, HHorario, TTurno, HTurno, TArea, HArea, TCategoria, HCategoria, TCCosto, HCCosto, TDepartamento, HDepartamento, TLinea, HLinea, TPlanta, HPlanta, TManoObra, HManoObra, Direccion, Ciudad, Colonia, Contacto, Cardex, Llaves, Concepto, Prestamo, CalendarioNomina, HNomina, RegistroPatronal, Tiempos, Registro, FondoAhorro, ConfigConceptos, Conceptos, Incidencias, Incapacidades, NivelesEstatus, Justificantes],
+  logging: false,
+  entities: [Empleado, Configuracion, Codigos, RazonSocial, Nacionalidad, Estado, EstadoCivil, TSupervisor, HSupervisor, HMedioPago, TMedioPago, TBanco, HBanco, THorario, HHorario, TTurno, HTurno, TArea, HArea, TCategoria, HCategoria, TCCosto, HCCosto, TDepartamento, HDepartamento, TLinea, HLinea, TPlanta, HPlanta, TManoObra, HManoObra, Direccion, Ciudad, Colonia, Contacto, Cardex, Llaves, Concepto, Prestamo, CalendarioNomina, HNomina, RegistroPatronal, Tiempos, Registro, FondoAhorro, ConfigConceptos, Conceptos, Incidencias, Incapacidades, NivelesEstatus, Justificantes, Usuario, Bitacora],
   migrations,
   extra: {
     trustServerCertificate: true

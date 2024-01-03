@@ -1,7 +1,8 @@
-import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { Incidencias } from './incidencias.entity'
 import { Incapacidades } from './incapacidades.entity'
 import { NivelesEstatus } from './estatus.entity'
+import { Bitacora } from './bitacora.entity'
 
 /* Justificantes */
 @Entity('TSolicitudes_Avisos_Justificaciones')
@@ -22,7 +23,7 @@ export class Justificantes extends BaseEntity {
     id_incapacidad: number
 
   @Column()
-    fecha_inicio: string
+    fecha_inicio: Date
 
   @Column()
     dias_incidencia: number
@@ -47,6 +48,9 @@ export class Justificantes extends BaseEntity {
 
   @Column()
     observaciones: string
+
+  @OneToOne(() => Bitacora, bitacora => bitacora.justificante)
+    bitacora: Bitacora
 
   @ManyToOne(() => Incidencias, incidencia => incidencia.justificante)
   @JoinColumn({ name: 'id_incidencia', referencedColumnName: 'id_razFal' })
