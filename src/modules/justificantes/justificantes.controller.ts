@@ -78,6 +78,46 @@ export async function incapacidades (req: Request, res: Response, next: NextFunc
   }
 }
 
+export async function tenant (req: Request, res: Response, next: NextFunction): Promise<void> {
+  const finder = new JustificantesService()
+  try {
+    const tenant = await finder.findTenant()
+
+    res.json(tenant)
+  } catch (error: any) {
+    logger.error('Error al obtener el tenant: ', error)
+    next(error)
+  }
+}
+
+export async function evidencia (req: Request, res: Response, next: NextFunction): Promise<void> {
+  const { id_justificacion } = req.params
+
+  const finder = new JustificantesService()
+  try {
+    const evidencia = await finder.findEvidencia(Number(id_justificacion))
+
+    res.json(evidencia)
+  } catch (error: any) {
+    logger.error('Error al obtener la evidencia: ', error)
+    next(error)
+  }
+}
+
+export async function fechaInicio (req: Request, res: Response, next: NextFunction): Promise<void> {
+  const { id_cia } = req.user!
+
+  const finder = new JustificantesService()
+  try {
+    const fechaInicio = await finder.findFechaInicio(id_cia)
+
+    res.json(fechaInicio)
+  } catch (error: any) {
+    logger.error('Error al obtener la fecha de inicio: ', error)
+    next(error)
+  }
+}
+
 export async function store (req: Request, res: Response, next: NextFunction): Promise<void> {
   const { id_emp } = req.user!
   const body = req.body
@@ -90,6 +130,21 @@ export async function store (req: Request, res: Response, next: NextFunction): P
     res.json(justificante)
   } catch (error: any) {
     logger.error('Error al crear el justificante: ', error)
+    next(error)
+  }
+}
+
+export async function storeEvidencia (req: Request, res: Response, next: NextFunction): Promise<void> {
+  const { id_justificacion, referencia_evidencia } = req.body
+
+  const creator = new JustificantesService()
+
+  try {
+    const evidencia = await creator.storeEvidencia(Number(id_justificacion), referencia_evidencia)
+
+    res.json(evidencia)
+  } catch (error: any) {
+    logger.error('Error al crear la evidencia: ', error)
     next(error)
   }
 }

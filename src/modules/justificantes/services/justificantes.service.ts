@@ -1,7 +1,6 @@
 import { AppDataSource } from '@/database/datasources'
 import { Configuracion } from '@/entities/configuracion.entity'
-import { Bitacora, Evidencia, Incapacidades, Incidencias } from '@/entities/justificantes'
-import { Justificantes } from '@/entities/justificantes/justificantes.entity'
+import { Bitacora, Evidencia, Incapacidades, Incidencias, Tenant, Justificantes } from '@/entities/justificantes'
 import { Usuario } from '@/entities/usuario.entity'
 import { generarFolio } from '@/helpers/helpers'
 import logger from '@/helpers/logger'
@@ -59,12 +58,39 @@ export class JustificantesService {
     return diasPermitidos[0]
   }
 
-  async findTipoCaptura (): Promise<any> {
+  async findTipoCaptura (): Promise<Configuracion> {
     const tipoCaptura = await Configuracion.find({
       select: { tipo_captura_justificacion: true }
     })
 
     return tipoCaptura[0]
+  }
+
+  async findTenant (): Promise<Tenant> {
+    const tenant = await Tenant.find()
+
+    if (tenant.length === 0) throw new HTTPError(404, 'No se encontró ningún Tenant, favor de contactar al administrador')
+
+    return tenant[0]
+  }
+
+  async findEvidencia (id_justificacion: number): Promise<Evidencia[]> {
+    const evidencia = await Evidencia.find({ where: { id_justificacion } })
+
+    if (evidencia.length === 0) throw new HTTPError(404, 'No se encontró evidencia para el justificante seleccionado')
+
+    return evidencia
+  }
+
+  async findFechaInicio (id_cia: number): Promise<any> {
+    const fechaInicio = await AppDataSource.query(
+      `
+        SELECT fecha_ini AS fecha_inicio FROM (SELECT MIN(FechaIni) AS fecha_ini FROM CalenNomina
+        WHERE Id_cia = @0 AND Actualizado = 0 AND Parcial = 0 AND Año = (SELECT AnioFiscal From Config)) AS fechas;
+      `, [id_cia]
+    )
+
+    return fechaInicio[0]
   }
 
   async store (id_emp: number, body: any): Promise<Object> {
@@ -118,6 +144,15 @@ export class JustificantesService {
     } finally {
       await queryRunner.release()
     }
+  }
+
+  async storeEvidencia (id_justificacion: number, referencia_evidencia:  string): Promise<any> {
+    const evidencia = await Evidencia.save({
+      id_justificacion,
+      referencia_evidencia
+    })
+
+    return evidencia
   }
 
   async destroy (id_justificacion: number): Promise<Object> {
