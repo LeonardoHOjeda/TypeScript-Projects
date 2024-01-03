@@ -8,6 +8,8 @@ import recibosRouter from '@/modules/recibo/recibo.routes'
 import vacacionesRouter from '@/modules/vacaciones/vacaciones.routes'
 import tiemposRouter from '@/modules/tiempos/tiempos.routes'
 import ahorroRouter from '@/modules/ahorro/ahorro.routes'
+import justificantesRouter from '@/modules/justificantes/justificantes.routes'
+
 const router = Router()
 
 // importing all routes here
@@ -22,5 +24,6 @@ router.use('/api/recibos', authenticate, recibosRouter)
 router.use('/api/vacaciones', authenticate, vacacionesRouter)
 router.use('/api/tiempos', authenticate, tiemposRouter)
 router.use('/api/fondo', authenticate, ahorroRouter)
+router.use('/api/justificantes', authenticate, justificantesRouter)
 
 export default router
