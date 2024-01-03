@@ -1,5 +1,6 @@
 import { AppDataSource } from '@/database/datasources'
-import { Bitacora, Incapacidades, Incidencias } from '@/entities/justificantes'
+import { Configuracion } from '@/entities/configuracion.entity'
+import { Bitacora, Evidencia, Incapacidades, Incidencias } from '@/entities/justificantes'
 import { Justificantes } from '@/entities/justificantes/justificantes.entity'
 import { Usuario } from '@/entities/usuario.entity'
 import { generarFolio } from '@/helpers/helpers'
@@ -30,6 +31,40 @@ export class JustificantesService {
     const incapacidades = await Incapacidades.find()
 
     return incapacidades
+  }
+
+  async findBitacora (id_justificacion: number): Promise<Bitacora[]> {
+    const bitacora = await Bitacora.find({
+      select: {
+        observaciones: true,
+        fecha_aplicacion: true,
+        id_estado_solicitud: true,
+        justificante: {
+          folio_incidencia: true
+        }
+      },
+      relations: { justificante: true, estatus: true },
+      where: { id_justificacion },
+      order: { fecha_aplicacion: 'ASC' }
+    })
+
+    return bitacora
+  }
+
+  async findDiasPermitidos (): Promise<Configuracion> {
+    const diasPermitidos = await Configuracion.find({
+      select: { dias_captura_justificacion: true }
+    })
+
+    return diasPermitidos[0]
+  }
+
+  async findTipoCaptura (): Promise<any> {
+    const tipoCaptura = await Configuracion.find({
+      select: { tipo_captura_justificacion: true }
+    })
+
+    return tipoCaptura[0]
   }
 
   async store (id_emp: number, body: any): Promise<Object> {
@@ -94,13 +129,20 @@ export class JustificantesService {
 
     const queryRunner = AppDataSource.createQueryRunner()
     await queryRunner.connect()
-
     await queryRunner.startTransaction()
+    try {
+      await queryRunner.manager.delete(Evidencia, { id_justificacion })
+      await queryRunner.manager.delete(Justificantes, { id_justificacion })
 
-    return {}
-  }
+      await queryRunner.commitTransaction()
 
-  async delete (id: any): Promise<Object> {
-    return {}
+      return justificante
+    } catch (error: any) {
+      await queryRunner.rollbackTransaction()
+      logger.error('Error al eliminar el justificante, transaccion cancelada: ', error)
+      throw new HTTPError(500, 'Error al eliminar el justificante')
+    } finally {
+      await queryRunner.release()
+    }
   }
 }

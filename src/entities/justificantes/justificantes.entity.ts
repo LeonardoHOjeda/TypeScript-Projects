@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { Incidencias } from './incidencias.entity'
 import { Incapacidades } from './incapacidades.entity'
 import { NivelesEstatus } from './estatus.entity'
@@ -49,8 +49,8 @@ export class Justificantes extends BaseEntity {
   @Column()
     observaciones: string
 
-  @OneToOne(() => Bitacora, bitacora => bitacora.justificante)
-    bitacora: Bitacora
+  @OneToMany(() => Bitacora, bitacora => bitacora.justificante)
+    bitacora: Bitacora[]
 
   @ManyToOne(() => Incidencias, incidencia => incidencia.justificante)
   @JoinColumn({ name: 'id_incidencia', referencedColumnName: 'id_razFal' })

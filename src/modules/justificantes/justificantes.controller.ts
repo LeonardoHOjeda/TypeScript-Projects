@@ -16,6 +16,44 @@ export async function justificantes (req: Request, res: Response, next: NextFunc
   }
 }
 
+export async function bitacora (req: Request, res: Response, next: NextFunction): Promise<void> {
+  const { id_justificacion } = req.params
+
+  const finder = new JustificantesService()
+  try {
+    const bitacora = await finder.findBitacora(Number(id_justificacion))
+
+    res.json(bitacora)
+  } catch (error: any) {
+    logger.error('Error al obtener la bitacora: ', error)
+    next(error)
+  }
+}
+
+export async function diasPermitidos (req: Request, res: Response, next: NextFunction): Promise<void> {
+  const finder = new JustificantesService()
+  try {
+    const diasPermitidos = await finder.findDiasPermitidos()
+
+    res.json(diasPermitidos)
+  } catch (error: any) {
+    logger.error('Error al obtener los dias permitidos: ', error)
+    next(error)
+  }
+}
+
+export async function tipoCaptura (req: Request, res: Response, next: NextFunction): Promise<void> {
+  const finder = new JustificantesService()
+  try {
+    const tipoCaptura = await finder.findTipoCaptura()
+
+    res.json(tipoCaptura)
+  } catch (error: any) {
+    logger.error('Error al obtener el tipo de captura: ', error)
+    next(error)
+  }
+}
+
 export async function incidencias (req: Request, res: Response, next: NextFunction): Promise<void> {
   const finder = new JustificantesService()
   try {
@@ -52,6 +90,21 @@ export async function store (req: Request, res: Response, next: NextFunction): P
     res.json(justificante)
   } catch (error: any) {
     logger.error('Error al crear el justificante: ', error)
+    next(error)
+  }
+}
+
+export async function destroy (req: Request, res: Response, next: NextFunction): Promise<void> {
+  const { id_justificacion } = req.params
+
+  const deleter = new JustificantesService()
+
+  try {
+    const justificante = await deleter.destroy(Number(id_justificacion))
+
+    res.json(justificante)
+  } catch (error: any) {
+    logger.error('Error al eliminar el justificante: ', error)
     next(error)
   }
 }

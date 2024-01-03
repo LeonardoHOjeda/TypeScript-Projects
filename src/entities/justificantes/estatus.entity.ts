@@ -1,5 +1,7 @@
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { Justificantes } from './justificantes.entity'
+import { Bitacora } from './bitacora.entity'
+// import { Bitacora } from './bitacora.entity'
 
 /* Estatus */
 @Entity('niveles_estatus')
@@ -18,4 +20,7 @@ export class NivelesEstatus extends BaseEntity {
 
   @OneToMany(() => Justificantes, justificante => justificante.nivel)
     justificante: Justificantes
+
+  @OneToMany(() => Bitacora, bitacora => bitacora.estatus)
+    bitacora: Bitacora
 }
