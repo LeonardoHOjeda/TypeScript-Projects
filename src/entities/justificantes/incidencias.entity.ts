@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm'
 import { Justificantes } from './justificantes.entity'
 
 /* Incidencias */
@@ -21,4 +21,16 @@ export class Incidencias extends BaseEntity {
 
   @OneToMany(() => Justificantes, justificante => justificante.incidencia)
     justificante: Justificantes
+}
+
+@Entity('HFaltasInd')
+export class HIncidencias extends BaseEntity {
+  @PrimaryColumn()
+    id_emp: number
+
+  @Column()
+    diasc: number
+
+  @Column()
+    fecha: Date
 }

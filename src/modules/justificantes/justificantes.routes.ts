@@ -1,11 +1,12 @@
 import { Router } from 'express'
 import * as justificantesController from './justificantes.controller'
+import { storeValidators } from './justificantes.validator'
 
 const router = Router()
 
 router.get('/', justificantesController.justificantes)
 //
-router.post('/', justificantesController.store)
+router.post('/', [...storeValidators], justificantesController.store)
 //
 router.get('/incidencias', justificantesController.incidencias)
 //

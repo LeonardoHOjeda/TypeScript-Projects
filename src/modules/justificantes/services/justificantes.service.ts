@@ -1,8 +1,8 @@
 import { AppDataSource } from '@/database/datasources'
 import { Configuracion } from '@/entities/configuracion.entity'
-import { Bitacora, Evidencia, Incapacidades, Incidencias, Tenant, Justificantes } from '@/entities/justificantes'
+import { Bitacora, Evidencia, Incapacidades, Incidencias, Tenant, Justificantes, HIncidencias, HIncapacidades } from '@/entities/justificantes'
 import { Usuario } from '@/entities/usuario.entity'
-import { generarFolio } from '@/helpers/helpers'
+import { fechaSinHora, generarFolio } from '@/helpers/helpers'
 import logger from '@/helpers/logger'
 import { HTTPError } from '@/middlewares/error_handler'
 
@@ -93,6 +93,55 @@ export class JustificantesService {
     return fechaInicio[0]
   }
 
+  // Validaciones
+  async findHistorialIncidencias (id_emp: number, fecha: string): Promise<Array<HIncidencias & { fechaFin: Date }>> {
+    const historialIncidencias = await HIncidencias.createQueryBuilder()
+      .select([
+        'id_emp',
+        'diasc',
+        'fecha',
+        'DATEADD(DAY, diasc - 1, fecha) AS fechaFin'
+      ])
+      .where('id_emp = :id_emp', { id_emp })
+      .andWhere('fecha >= :fecha', { fecha })
+      .orderBy('fecha', 'DESC')
+      .getRawMany()
+
+    console.log('Historial Incidencias: ', historialIncidencias)
+
+    const historialFormateado = historialIncidencias.map(incidencia => ({
+      ...incidencia,
+      fecha: fechaSinHora(incidencia.fecha),
+      fechaFin: fechaSinHora(incidencia.fechaFin)
+    }))
+    console.log('service - historialIncidencias: ', historialFormateado)
+
+    return historialIncidencias
+  }
+
+  async findHistorialIncapacidades (id_emp: number, fecha: string): Promise<Array<HIncapacidades & { fechaFin: Date }>> {
+    const historialIncapacidades = await HIncapacidades.createQueryBuilder()
+      .select([
+        'id_emp',
+        'diasi',
+        'fecha',
+        'DATEADD(DAY, diasi - 1, fecha) AS fechaFin'
+      ])
+      .where('id_emp = :id_emp', { id_emp })
+      .andWhere('fecha >= :fecha', { fecha })
+      .orderBy('fecha', 'DESC')
+      .getRawMany()
+
+    const historialFormateado = historialIncapacidades.map(incapacidad => ({
+      ...incapacidad,
+      fecha: fechaSinHora(incapacidad.fecha),
+      fechaFin: fechaSinHora(incapacidad.fechaFin)
+    }))
+    console.log('service - Historial Incapacidades: ', historialFormateado)
+
+    return historialFormateado
+  }
+
   async store (id_emp: number, body: any): Promise<Object> {
     const empleadoWeb = await Usuario.findOne({ where: { usuario: '#EmpleadoWeb' } })
 
@@ -146,7 +195,7 @@ export class JustificantesService {
     }
   }
 
-  async storeEvidencia (id_justificacion: number, referencia_evidencia:  string): Promise<any> {
+  async storeEvidencia (id_justificacion: number, referencia_evidencia: string): Promise<any> {
     const evidencia = await Evidencia.save({
       id_justificacion,
       referencia_evidencia
