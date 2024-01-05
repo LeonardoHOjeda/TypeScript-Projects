@@ -38,7 +38,7 @@ export class Mailer {
       })
 
       logger.log(`Email sent to ${options.to}`)
-      console.log(info)
+      console.log(info.accepted)
     } catch (error: any) {
       logger.error(error)
     }
