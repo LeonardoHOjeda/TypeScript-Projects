@@ -12,13 +12,42 @@ export async function datosGenerales (req: Request, res: Response, next: NextFun
     const empleado = await finder.findOne(id_emp, noempx)
 
     res.json(empleado)
-  } catch (error) {
-    logger.error('Error al obtener el empleado autenticado')
+  } catch (error: any) {
+    logger.error('Error al obtener el empleado autenticado: ', error)
     next(error)
   }
 }
 
-// export async function update (req: Request, res: Response, next: NextFunction): Promise<void> {
-//   const { id } = req.params
-//   const updater = new EmpleadoService()
-// }
+// TODO: Actualizar contrasena del empleado
+
+//
+
+export async function sendMail (req: Request, res: Response, next: NextFunction): Promise<void> {
+  const { email } = req.body
+
+  const finder = new EmpleadoService()
+  try {
+    await finder.sendPasswordResetEmail(email)
+
+    res.status(204).end()
+  } catch (error: any) {
+    logger.error('Error al enviar el correo: ', error)
+    next(error)
+  }
+}
+
+// Pagina para verificar el token
+export async function verifyToken (req: Request, res: Response, next: NextFunction): Promise<void> {
+  const { token } = req.query
+
+  const finder = new EmpleadoService()
+  try {
+    await finder.verifyPasswordToken((token as string))
+
+    // Regresar una pagina de exito
+    res.send('Token verificado')
+  } catch (error: any) {
+    logger.error('Error al verificar el token: ', error)
+    next(error)
+  }
+}

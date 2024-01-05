@@ -40,7 +40,7 @@ export class Empleado extends BaseEntity {
     sexo: string
 
   @Column()
-    rfcFecha: string
+    rfcFecha: Date
 
   @Column()
     lunac: string
@@ -49,16 +49,16 @@ export class Empleado extends BaseEntity {
     issste: string
 
   @Column()
-    fecha_alta: string
+    fecha_alta: Date
 
   @Column()
-    fechaPerPrueba: string
+    fechaPerPrueba: Date
 
   @Column()
-    fechaTerContrato: string
+    fechaTerContrato: Date
 
   @Column()
-    fechaRevContrato: string
+    fechaRevContrato: Date
 
   @Column()
     gpo_imss: string
@@ -86,6 +86,9 @@ export class Empleado extends BaseEntity {
 
   @Column()
     edoCivil: string
+
+  @Column()
+    reset_password_token: string
 
   @OneToOne(() => Codigos, codigo => codigo.empleado)
     codigo: Codigos

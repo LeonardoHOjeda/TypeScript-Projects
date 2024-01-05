@@ -5,5 +5,7 @@ import * as empleadoController from './empleado.controller'
 const router = Router()
 
 router.get('/', empleadoController.datosGenerales)
+router.post('/reset', empleadoController.sendMail)
+router.get('/verificar', empleadoController.verifyToken)
 
 export default router

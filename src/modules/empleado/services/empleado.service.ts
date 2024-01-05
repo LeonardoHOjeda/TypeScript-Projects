@@ -1,6 +1,8 @@
+import { v4 as uuidv4 } from 'uuid'
 import { Empleado, HSupervisor } from '@/entities/empleados'
 import { Contacto } from '@/entities/empleados/contacto.entity'
 import { HBanco, HLinea, HMedioPago, HArea, HCategoria, HCCosto, HDepartamento, HHorario, HTurno, HPlanta, HManoObra } from '@/entities/nomina'
+import { Mailer } from '@/helpers/mailer'
 import { HTTPError } from '@/middlewares/error_handler'
 
 export class EmpleadoService {
@@ -235,5 +237,41 @@ export class EmpleadoService {
     await empleado.save()
 
     return empleado
+  }
+
+  // Enviar correo para restablecer la contrasena
+  async sendPasswordResetEmail (email: string): Promise<void> {
+    const uuid = uuidv4()
+    const empleado = await Empleado.findOne({ where: { email } })
+    console.log('Empleado: ', empleado)
+
+    if (empleado == null) throw new HTTPError(404, 'Empleado no encontrado')
+    empleado.reset_password_token = uuid
+    await empleado.save()
+    console.log('Empleado guardado: ')
+
+    Mailer.sendNotification({
+      subject: 'Restablecer contraseña',
+      to: email,
+      greeting: `Hola ${empleado.nombre} ${empleado.apPaterno}`,
+      content: 'Hemos recibido una solicitud para restablecer tu contraseña. Si no has realizado esta solicitud, puedes ignorar este correo.',
+      atte: 'Atte. Kiosko Riche',
+      action: {
+        title: 'Restablecer contraseña',
+        url: `${process.env.FRONTEND_URL}/configuracion?token=${uuid}`
+      }
+    })
+  }
+
+  // TODO: Actualizar contrasena despues de verificar el token
+  async verifyPasswordToken (token: string): Promise<boolean> {
+    const empleado = await Empleado.findOne({ where: { reset_password_token: token } })
+
+    if (empleado == null) throw new HTTPError(404, 'El código no es válido o ha expirado')
+
+    empleado.reset_password_token = ''
+    await empleado.save()
+
+    return true
   }
 }
