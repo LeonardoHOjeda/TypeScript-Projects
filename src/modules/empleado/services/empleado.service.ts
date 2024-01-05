@@ -223,5 +223,17 @@ export class EmpleadoService {
     return contacto
   }
 
-  // TODO: Actualizar contraseña del empleado
+  async update (username: string, body: any): Promise<Empleado | null> {
+    const empleado = await Empleado.findOne({ where: { noempx: username } })
+    // Obtener contrasena anterior y la nueva
+    const { nip, nuevoNip } = body
+
+    if (empleado == null || empleado.nip !== nip) return null
+
+    empleado.nip = nuevoNip
+
+    await empleado.save()
+
+    return empleado
+  }
 }
