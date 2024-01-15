@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recibo Main</title>
+  <style>
+  body {
+    font-family: Arial, Helvetica, sans-serif;  
+  }
+
+  table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th, td {
+    border: 1px solid black;
+    text-align: center;
+  }
+
+  th {
+    font-size: 10px;
+    background-color: #CFCFCF;
+    font-weight: bold;
+    -webkit-print-color-adjust: exact; 
+  }
+
+  td {
+    font-size: 9px;
+    overflow: hidden;
+    max-width: 100%;
+    padding-left: 0.1cm;
+  }
+
+  p {
+    font-size: 8px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .imgLogo  {
+    width: 130px;
+    height: auto;
+    margin-right: 20px;
+  }
+
+  .imgQr {
+    width: 150px;
+    height: auto;
+    object-fit: cover;
+    margin-right: 20px;
+  }
+
+  .imagen {
+    margin-left: 160px;
+  }
+
+  .main-container {
+    margin-left: 2.5cm;
+    margin-right: 2.5cm;
+  }
+
+  .wrap-cell {
+    white-space: normal;
+  }
+
+  .d-flex {
+    display: flex;
+  }
+
+  .flex-row {
+    flex-direction: row;
+  }
+
+  .justify-content-between {
+    justify-content: space-between;
+  }
+
+  .mb-2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .mt-3 {
+    margin-top: 2rem;
+  }
+
+  .p-2 {
+    padding: 0.5rem;
+  }
+
+  .p-3 {
+    padding: 1rem;
+  }
+
+  .p-5 {
+    padding: 3rem;
+  }
+
+  .text-left {
+    text-align: left; 
+  }
+
+  .text-right {
+    text-align: right; 
+  }
+
+  .text-justify {
+    text-align: justify; 
+  }
+
+  .table-sm {
+    font-size: 0.8rem;
+  }
+
+  .font-weight-bold {
+    font-weight: bold;
+  }
+
+  .legal {
+    font-size: 0.6rem;
+  }
+  </style>
+</head>
+
+<body>
+  <div class="main-container mt-3">
+    <div class="d-flex flex-row">
+      <div >
+        <img class="imgLogo" src="data:image/jpeg;base64,{{imagen}}" alt="">
+      </div>
+
+      <table class="table table-sm mb-2">
+        <tbody>
+          <tr>
+            <th colspan="8">
+              Datos Fiscales Emisor
+            </th>
+            <th colspan="4">
+              No. Recibo
+            </th>
+          </tr>
+
+          <tr>
+            <td colspan="8">
+              {{data.empresa.[0].razonSocial}}
+            </td>
+            <td colspan="4">
+              {{noRecibo}}
+            </td>
+          </tr>
+          
+          <tr>
+            <td colspan="8">
+              RFC:{{data.empresa.[0].rfc}} Registro Patronal: {{data.registroPatronal.[0].regPat}}
+            </td>
+            <th colspan="4">Fecha Expedicion</th>
+          </tr>
+
+          <tr>
+            <th colspan="8">Lugar Expedicion:</th>
+            <td colspan="4">{{now}}</td>
+          </tr>
+
+          <tr>
+            <td colspan="8">
+              {{data.empresa.[0].domicilio}}-{{data.empresa.[0].colonia}}
+            </td>
+            <th colspan="4">Fecha/Hora Certificacion</th>
+          </tr>
+
+          <tr>
+            <td colspan="8">
+              C.P.:{{data.empresa.[0].codigoPostal}} {{data.empresa.[0].ciudad}}-{{data.empresa.[0].estado}} MEXICO
+            </td>
+            <td colspan="4">
+              {{timbradoData.fecha_timbrado}}
+            </td>
+          </tr>
+
+          <tr>
+            <th colspan="8">Regimen Fiscal</th>
+            <th colspan="4">No. Certificado Digital</th>
+          </tr>
+
+          <tr>
+            <td colspan="8">{{regimenFiscal}}</td>
+            <td colspan="4">{{timbradoData.noCertificado}}</td>
+          </tr>
+
+          <tr>
+            <th colspan="8">Folio Fiscal</th>
+            <th colspan="4">No. Serie Certificado SAT</th>
+          </tr>
+
+          <tr>
+            <td class="p-2" colspan="8" style="text-transform: uppercase;">{{timbradoData.uuid_timbrado}}</td>
+            <td colspan="4">{{timbradoData.noCertificadoSAT}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <table class="table table-sm mb-2">
+        <tbody>
+          <tr>
+            <th colspan="12">Datos Fiscales del Receptor</th>
+          </tr>
+          {{#if plazas.configPlaza}}
+          <tr>
+            <td colspan="4" class="text-left">
+              No. Emp: {{data.empleado.[0].noempx}}
+            </td>
+            <td colspan="5" class="text-left">
+              Nombre: {{data.empleado.[0].nombre}} {{data.empleado.[0].apPaterno}} {{data.empleado.[0].apMaterno}}
+            </td>
+            <td colspan="3" class="text-left">
+              No Plaza: {{plazas.infoPlaza.No_plaza}}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4" class="text-left">
+              RFC: {{data.empleado.[0].RFC}}
+            </td>
+            <td colspan="5" class="text-left">
+              CURP: {{data.empleado.[0].Curp}}
+            </td>
+            <td colspan="3" class="text-left">
+              IMSS: {{data.empleado.[0].IMSS}}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4" class="text-left">
+              Fecha de Alta: {{data.empleado.[0].fecha_alta}}
+            </td>
+            <td colspan="5" class="text-left">
+              Periodo de Pago: {{data.empleado.[0].periodoPago}}
+            </td>
+            <td colspan="3" class="text-left">
+              SD: {{data.empleado.[0].sd}} SDI: ${{data.empleado.[0].sdi}}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4" class="text-left">
+              Medio de Pago: {{data.empleado.[0].medioPago}}
+            </td>
+            <td colspan="5" class="text-left">
+              Banco: {{data.empleado.[0].banco}}
+            </td>
+            <td colspan="3" class="text-left">
+              Num. Cuenta: {{data.empleado.[0].cuenta}}
+            </td>
+          <tr>
+            <td colspan="4" class="text-left">
+              Departamento: {{plazas.infoPlaza.DescDeptoPlaza}}
+            </td>
+            {{#if plazas.infoPlaza.DescCategoriaPlaza}}
+            <td colspan="5" class="text-left">
+              Puesto: NA
+            </td>
+            <td colspan="3" class="text-left">
+              Nivel: NA
+            </td>
+            {{else}}
+            <td colspan="5" class="text-left">
+              Puesto: {{plazas.infoPlaza.DescPuestoPlaza}}
+            </td>
+            <td colspan="3" class="text-left">
+              Nivel: {{plazas.infoPlaza.DescNivelPlaza}}
+            </td>
+            {{/if}}
+          </tr>
+          <tr>
+            {{#if plazas.infoPlaza.DescCategoriaPlaza}}
+            <td colspan="4" class="text-left">
+              Categoria: {{plazas.infoPlaza.DescCategoriaPlaza}}
+            </td>
+            {{else}}
+            <td colspan="4" class="text-left">
+              Categoria: NA
+            </td>
+            {{/if}}
+            <td colspan="5" class="text-left">
+              Turno-Horario: {{data.empleado.[0].Horario}}
+            </td>
+            <td colspan="3" class="text-left">
+            </td>
+          </tr>
+          {{else}}
+          <tr>
+            <td colspan="4" class="text-left">
+              No. Emp: {{data.empleado.[0].noempx}}
+            </td>
+            <td colspan="5" class="text-left">
+              Nombre: {{data.empleado.[0].nombre}} {{data.empleado.[0].apPaterno}} {{data.empleado.[0].apMaterno}}
+            </td>
+            <td colspan="3" class="text-left">
+              RFC: {{data.empleado.[0].rfc}}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4" class="text-left">
+              CURP: {{data.empleado.[0].curp}}
+            </td>
+            <td colspan="5" class="text-left">
+              IMSS: {{data.empleado.[0].imss}}
+            </td>
+            <td colspan="3" class="text-left">
+              Fecha de Alta: {{data.empleado.[0].fecha_alta}}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4" class="text-left">
+              Periodo de Pago: {{data.empleado.[0].periodoPago}}
+            </td>
+            <td colspan="5" class="text-left">
+              SD: {{data.empleado.[0].sd}} SDI: ${{data.empleado.[0].sdi}}
+            </td>
+            <td colspan="3" class="text-left">
+              Medio de Pago: {{data.empleado.[0].medioPago}}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4" class="text-left">
+              Banco: {{data.empleado.[0].banco}}
+            </td>
+            <td colspan="5" class="text-left">
+              Num. Cuenta: {{data.empleado.[0].cuenta}}
+            </td>
+            <td colspan="3" class="text-left">
+              Departamento: {{data.empleado.[0].departamento}}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4" class="text-left">
+              Puesto: {{data.empleado.[0].puesto}}
+            </td>
+            <td colspan="5" class="text-left">
+              Turno-Horario: {{data.empleado.[0].horario}}
+            </td>
+            <td colspan="3" class="text-left">
+            </td>
+          </tr>
+          {{/if}}
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <table class="table table-sm mb-2">
+        <thead>
+          <tr>
+            <th colspan="12">PERCEPCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="font-weight-bold" colspan="1">Clave</td>
+            <td class="font-weight-bold" colspan="4">Concepto</td>
+            <td class="font-weight-bold" colspan="1">Horas</td>
+            <td class="font-weight-bold" colspan="1">Gravado</td>
+            <td class="font-weight-bold" colspan="1">Exento</td>
+            <td class="font-weight-bold" colspan="4">Total</td>
+          </tr>
+          {{#each data.percepciones}}
+            <tr>
+              <td class="text-left" colspan="1">{{clave}}</td>
+              <td class="text-left" colspan="4">{{concepto}}</td>
+              <td class="text-right" colspan="1">{{horas}}</td>
+              <td class="text-right" colspan="1">{{pesos}}</td>
+              <td class="text-right" colspan="1">{{excento}}</td>
+              <td class="text-right" colspan="4">{{total}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <table class="table table-sm mb-2">
+        <thead>
+          <tr>
+            <th colspan="12">DEDUCCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="font-weight-bold" colspan="1">Clave</td>
+            <td class="font-weight-bold" colspan="5">Concepto</td>
+            <td class="font-weight-bold" colspan="1">Gravado</td>
+            <td class="font-weight-bold" colspan="1">Exento</td>
+            <td class="font-weight-bold" colspan="4">Total</td>
+          </tr>
+          {{#each data.deducciones}}
+            <tr>
+              <td class="text-left" colspan="1">{{id_concepto}}</td>
+              <td class="text-left" colspan="5">{{descripcion}}</td>
+              <td class="text-right" colspan="1">{{pesos}}</td>
+              <td class="text-right" colspan="1">{{pesosExcento}}</td>
+              <td class="text-right" colspan="4">${{importe}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <table class="table table-sm mb-2">
+        <thead>
+          <tr>
+            <th colspan="6"></th>
+            <th colspan="6">IMPORTE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-left" colspan="6">Forma de Pago: Pago en una sola exhibición</td>
+            <td class="text-left font-weight-bold" colspan="4">Total Percepciones/Subtotal</td>
+            <td class="text-right" colspan="2">{{sumaPercepciones}} </td>
+          </tr>
+          <tr>
+            <td class="text-left" colspan="6">Condiciones de Pago: Contado</td>
+            <td class="text-left font-weight-bold" colspan="4">Total Deducciones/Descuentos</td>
+            <td class="text-right" colspan="2">{{sumaDeducciones}}</td>
+          </tr>
+            <tr>
+              {{#if configSaldos.fdoAhrcbo}}
+                {{#if saldos.saldoEmpleado}}
+                  <tr>
+                    <td class="text-left" colspan="6">Saldo Fondo Ahorro Empleado al Periodo Actual: {{saldos.saldoEmpleado}}</td>
+                    <td class="text-left font-weight-bold" colspan="4">Total</td>
+                    <td class="text-right font-weight-bold" colspan="2">{{netoAPagar}}</td>
+                  </tr>
+                {{/if}}
+              {{else}}
+                <tr>
+                  <td colspan="6"></td>
+                  <td class="text-left font-weight-bold" colspan="4">Total</td>
+                  <td class="text-right font-weight-bold" colspan="2">{{netoAPagar}}</td>
+                </tr>
+              {{/if}}
+            </tr>
+          {{#if configSaldos.fdoAhrcboEmpresa}}
+            {{#if saldos.saldoEmpresa}}
+            <tr>
+              <td class="text-left" colspan="6">Saldo Fondo Ahorro Empresa al Periodo Actual: {{saldos.saldoEmpresa}}</td>
+              <td class="text-left font-weight-bold" colspan="4"></td>
+              <td class="text-right font-weight-bold" colspan="2"></td>
+            </tr>
+            {{/if}}
+          {{/if}}
+          {{#if configConcepto.concepto1}}
+            <tr>
+              <td class="text-left" colspan="6">Saldo {{nombreConceptos.concepto1}} al periodo actual: {{saldoConceptos.concepto1}}</td>
+              <td class="text-left font-weight-bold" colspan="4"></td>
+              <td class="text-right font-weight-bold" colspan="2"></td>
+            </tr>
+          {{/if}}
+          {{#if configConcepto.concepto2}}
+            <tr>
+              <td class="text-left" colspan="6">Saldo {{nombreConceptos.concepto2}} al periodo actual: {{saldoConceptos.concepto2}}</td>
+              <td class="text-left font-weight-bold" colspan="4"></td>
+              <td class="text-right font-weight-bold" colspan="2"></td>
+            </tr>
+          {{/if}}
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <table class="table mb-2">
+        <tbody>
+          <tr>
+            <td class="p-2">{{captions.leyenda1}} {{captions.leyenda2}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <table class="table table-sm mb-2">
+        <thead>
+          <tr>
+            <th colspan="12">Cadena Original del Complemento del Certificado Digital del SAT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-left p-2" colspan="12">
+              <p class="my-0" style="word-wrap: break-word;">{{timbradoData.cadenaorigenal_timbresat}}</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="d-flex flex-row">
+      {{#if base64Qr }}
+      <div>
+        <img class="imgQr" src="data:image/jpeg;base64,{{base64Qr}}" alt="">
+      </div>
+      {{else}}
+      <div>
+        <span class="imagen"></span>
+      </div>
+      {{/if}}
+      <div>
+        <table class="table table-sm mb-2">
+          <tbody>
+            <tr>
+              <th colspan="12">Sello Digital CFDI</th>
+            </tr>
+            <tr>
+              <td class="text-left p-2" colspan="12">
+                <p class="my-0" style="word-wrap: break-word;">{{timbradoData.sello_cfd}}</p>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="12">Sello Digital del SAT</th>
+            </tr>
+            <tr>
+              <td class="text-left p-2" colspan="12">
+                <p class="my-0" style="word-wrap: break-word;">{{timbradoData.sello_sat}}</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="mt-3">
+          <hr>
+          <p class="text-justify font-weight-bold">Recibí de conformidad el salario devengado por los días que labore en el periodo de tiempo que determina este recibo, no resevandome acción alguna que ejercitar, ni presente ni futura en contra de la empresa, por concepto de sueldos, diferencias de salario, horas extras, séptimos días, días festivos, ni de ninguna naturaleza.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

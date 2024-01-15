@@ -1,0 +1,5 @@
+export * from './calendario_nomina.entity'
+export * from './nomina.entity'
+export * from './imagen.entity'
+export * from './timbrado.entity'
+export * from './concepto.entity'
