@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  kioskofront:
+    image: registry.gobdigital.com/nomina/kiosko_front_react:1.0.0
+    container_name: kioskofront
+    ports: 
+      - 80:80
+    environment:
+      VITE_API_URL: http://localhost:3000/api

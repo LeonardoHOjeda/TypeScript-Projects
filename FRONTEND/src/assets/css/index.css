@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cecece;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9999;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
+.MuiDrawer-root .MuiListItemIcon-root {
+  background-color: white;
+  min-width: unset;
+  border-radius: 5px;
+  margin-right: 24px;
+  padding: 3px;
+  box-shadow: 2px 4px 5px -1px rgba(0, 0, 0, 0.5);
+}

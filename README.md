@@ -1,37 +1,7 @@
-# KIOSKO-APP (Node y TypeScript)
+# KIOSKO-APP (NodeJS y React)
+KIOSKO-APP es un monorepo que combina un proyecto en NodeJS para el BACKEND y un proyecto en React para el FRONTEND.
 
-El proyecto KIOSKO-APP es un proyecto que se encarga de gestionar la información de los empleados que se encuentran en la base de datos de la empresa para que los mismos puedan acceder a la información de su nómina, préstamos, vacaciones, generar justificantes, etc.
+El proyecto de Kiosko es un proyecto que sirve para la visualizacion de la informacion de los empleados de una empresa, así como la creación de solicitudes de justificantes  de los empleados.
 
-# Instalación del proyecto
-
-## Descargar Repositorio
-### HTTPS
-`git clone https://gitlab.gobdigital.com/nomina/s3-checadas-sync`
-
-## Instalar dependencias de desarrollo
-
-Una vez descargado el repositorio, ejecutar el siguiente comando
-`npm install`
-
-## Comando para correr el proyecto en **MODO DESARROLLO**
-
-`npm run dev`
-
-## ESLint usado
-
-- [ts-standard](https://www.npmjs.com/package/ts-standard)
-
-## ORM
-- [typeorm](https://www.npmjs.com/package/typeorm)	
-
-## Versiones de Node y NPM
-- Node: 18.17.1
-- NPM: 9.6.7
-
-
-## Docker Build
-Crear la imagen de docker
-`docker build -t registry.gobdigital.com/nomina/kiosko_api_backend:VERSION_NAME .`
-
-Subir la imagen de docker
-`docker push registry.gobdigital.com/nomina/kiosko_api_backend:VERSION_NAME`
+## Estructura del repositorio
+El repositorio esta dividido en dos carpetas principales, una para el BACKEND y otra para el FRONTEND. Cada una de estas carpetas contiene su propio README.md con las instrucciones para levantar el proyecto.
